@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/L-128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/L-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/L-16x16.png">
+  <link rel="mask-icon" href="/images/L-128x128.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://249606097.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="递归为我们提供了一种对复杂问题的优雅解决方案，精巧的递归算法常常十分简单，其精髓在于将问题分解为规模更小的相同问题，并持续分解直到问题的规模小到可以用非常简单的直接方式来解决。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="递归 Recursion">
+<meta property="og:url" content="https://249606097.github.io/2020/02/18/%E9%80%92%E5%BD%92-Recursion/index.html">
+<meta property="og:site_name" content="Leo Blog">
+<meta property="og:description" content="递归为我们提供了一种对复杂问题的优雅解决方案，精巧的递归算法常常十分简单，其精髓在于将问题分解为规模更小的相同问题，并持续分解直到问题的规模小到可以用非常简单的直接方式来解决。">
+<meta property="og:image" content="https://249606097.github.io/images/img00009.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00010.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00011.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00012.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00013.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00014.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00015.png">
+<meta property="article:published_time" content="2020-02-18T14:37:30.000Z">
+<meta property="article:modified_time" content="2020-02-21T09:19:52.625Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="recursion">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://249606097.github.io/images/img00009.png">
+
+<link rel="canonical" href="https://249606097.github.io/2020/02/18/%E9%80%92%E5%BD%92-Recursion/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>递归 Recursion | Leo Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Leo Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Leo Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Awesome!</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://249606097.github.io/2020/02/18/%E9%80%92%E5%BD%92-Recursion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Leo">
+      <meta itemprop="description" content="I just want to do what I want.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leo Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          递归 Recursion
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-18 22:37:30" itemprop="dateCreated datePublished" datetime="2020-02-18T22:37:30+08:00">2020-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-21 17:19:52" itemprop="dateModified" datetime="2020-02-21T17:19:52+08:00">2020-02-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>递归为我们提供了一种对复杂问题的优雅解决方案，精巧的递归算法常常十分简单，其精髓在于将问题分解为规模更小的相同问题，并持续分解直到问题的规模小到可以用非常简单的直接方式来解决。</p>
+<a id="more"></a>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>递归 Recursion，又称递回，在计算机科学中，是指在函数的定义中使用函数自身的方法。</p>
+<p><img src="/images/img00009.png" alt=""></p>
+<p>递归是一种解决问题的方法，其精髓在于将问题分解为规模更小的相同问题，并持续分解直到问题的规模小到可以用非常简单的直接方式来解决。递归的问题分解方式非常独特，其算法方面的明显特征就是: 在算法流程中调用自身，从而使得算法十分的简单。</p>
+<p>递归对编写者来说，节省了大量的思考时间，但是对计算机处理来说，极不友好。递归消耗大量的栈资源，容易造成栈溢出，并且相比较与循环，通过开辟新的栈桢需要花费更多的时间，所以对于一个普通循化不宜编写，且递归深度不是特别大时，再考虑使用递归。</p>
+<p><img src="/images/img00010.png" alt=""></p>
+<p>Python 中默认的可递归深度是 1000，通过 <code>sys.getrecursionlimit()</code> 获取可递归深度，使用 <code>sys.setrecursionlimit(2000)</code> 修改可递归深度。</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>递归算法的基本流程是</p>
+<ul>
+<li>递归算法必须有一个基本结束条件（直接解决最小规模的问题）</li>
+<li>递归算法必须向基本结束条件演进（减小问题的规模）</li>
+<li>递归算法必须调用自身（解决减小了规模的相同问题）</li>
+</ul>
+<p>这里以一个简单的例子解释，求列表所有元素的和。</p>
+<blockquote>
+<p>求列表和函数</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_list</span><span class="params">(li: list)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> li:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> len(li) &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> li[<span class="number">0</span>] + sum_list(li[<span class="number">1</span>:])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> li[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(sum_list([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]))  <span class="comment"># 10</span></span><br></pre></td></tr></table></figure>
+<p><code>if not li:</code> 是对空列表进行特别处理，返回数值 0，和整个递归函数关系不大。</p>
+<p>对于求和来说，如果只有一个数的和，那么没必要求和，直接返回；如果有两个数的和，那么将两个加起来，返回得数；如果有三个数的和，那么将第一个数加上后两个数的和，返回的数。从以上三种状态我们就能写出递归。</p>
+<p><code>if len(li) &gt; 1:</code> 为 True 时，要是得问题规模减小，即当取列表第一个数与之后数的和求和；为 False 时，问题已经时最小规模，即列表中仅含有一个数。</p>
+<p><img src="/images/img00011.png" alt=""></p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>许多循环问题都可以使用递归解决，递归可应用的方面也有许多，这里就介绍几种。</p>
+<h3 id="十进制转化任意进制"><a href="#十进制转化任意进制" class="headerlink" title="十进制转化任意进制"></a>十进制转化任意进制</h3><blockquote>
+<p>转化函数</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert</span><span class="params">(n: int, base: int)</span> -&gt; str:</span></span><br><span class="line">    NUM = <span class="string">'0123456789ABCDEF'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> n &lt; base:</span><br><span class="line">        <span class="keyword">return</span> NUM[n]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> convert(n // base, base) + NUM[n % base]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(convert(<span class="number">123</span>, <span class="number">16</span>))  <span class="comment"># 7B</span></span><br></pre></td></tr></table></figure>
+<h3 id="汉诺塔"><a href="#汉诺塔" class="headerlink" title="汉诺塔"></a>汉诺塔</h3><p>汉诺塔， 又称河内塔，问题是源于印度一个古老传说的益智玩具。大梵天创造世界的时候做了三根金刚石柱子，在一根柱子上从下往上按照大小顺序摞着64片黄金圆盘。大梵天命令婆罗门把圆盘从下面开始按大小顺序重新摆放在另一根柱子上。并且规定，在小圆盘上不能放大圆盘，在三根柱子之间一次只能移动一个圆盘。</p>
+<p>汉诺塔的规则:</p>
+<ol>
+<li>每次移动一个圆盘</li>
+<li>大圆盘不能在小圆盘的上面</li>
+</ol>
+<p>我们分情况考虑:</p>
+<ol>
+<li><p>有 1 个圆盘时</p>
+<ul>
+<li><p>将圆盘直接从 Start 移到 End，Start —&gt; End</p>
+<p><img src="/images/img00012.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>有 2 个圆盘时</p>
+<ul>
+<li><p>将小圆盘从 Start 移到 Middle，Start —&gt; Middle</p>
+</li>
+<li><p>将大圆盘从 Start 移到 End，Start —&gt; End</p>
+</li>
+<li><p>将小圆盘从 Middle 移到 End，Middle —&gt; End</p>
+<p><img src="/images/img00013.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>有 3 个圆盘时</p>
+<ul>
+<li><p>将最大圆盘上面两个圆盘从 Start 移到 Middle，递归移动</p>
+</li>
+<li><p>将最大圆盘移到 End，Start —&gt; End</p>
+</li>
+<li><p>将两个圆盘从 Middle 移到 End，递归移动</p>
+<p><img src="/images/img00014.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>有 n 个圆盘时</p>
+<ul>
+<li>将最大圆盘上面 n - 1 个圆盘从 Start 移到 Middle，递归移动</li>
+<li>将最大圆盘移到 End，Start —&gt; End</li>
+<li>将 n - 1 个圆盘从 Middle 移到 End，递归移动</li>
+</ul>
+</li>
+</ol>
+<p>根据上面的情况我们就能写出递归。</p>
+<blockquote>
+<p>移动汉诺塔</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(height, start, middle, end)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> height == <span class="number">1</span>:</span><br><span class="line">        print(start, <span class="string">'--&gt;'</span>, end)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        move(height - <span class="number">1</span>, start, end, middle)</span><br><span class="line"></span><br><span class="line">        print(start, <span class="string">'--&gt;'</span>, end)</span><br><span class="line"></span><br><span class="line">        move(height - <span class="number">1</span>, middle, start, end)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    move(<span class="number">3</span>, <span class="string">'start '</span>, <span class="string">'middle'</span>, <span class="string">'end   '</span>)</span><br><span class="line"><span class="comment"># start  --&gt; end   </span></span><br><span class="line"><span class="comment"># start  --&gt; middle</span></span><br><span class="line"><span class="comment"># end    --&gt; middle</span></span><br><span class="line"><span class="comment"># start  --&gt; end   </span></span><br><span class="line"><span class="comment"># middle --&gt; start </span></span><br><span class="line"><span class="comment"># middle --&gt; end   </span></span><br><span class="line"><span class="comment"># start  --&gt; end</span></span><br></pre></td></tr></table></figure>
+<p>而如果要显示每个柱上圆盘的情况写法就有些复杂了。</p>
+<blockquote>
+<p>汉诺塔圆盘情况</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pole</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name: str, disks: list)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.disks = disks</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pick</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.disks.pop()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, disk)</span>:</span></span><br><span class="line">        self.disks.append(disk)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name + <span class="string">': '</span> + str(self.disks)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">display</span><span class="params">(a: Pole, b: Pole, c: Pole)</span>:</span></span><br><span class="line">    li = [str(a), str(b), str(c)]</span><br><span class="line">    li.sort()</span><br><span class="line">    print(li[<span class="number">2</span>], li[<span class="number">1</span>], li[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(height, start: Pole, middle: Pole, end: Pole)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> height == <span class="number">1</span>:</span><br><span class="line">        end.put(start.pick())</span><br><span class="line">        display(start, middle, end)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        move(height - <span class="number">1</span>, start, end, middle)</span><br><span class="line"></span><br><span class="line">        end.put(start.pick())</span><br><span class="line">        display(start, middle, end)</span><br><span class="line"></span><br><span class="line">        move(height - <span class="number">1</span>, middle, start, end)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    h = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    tower = []</span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> range(h):</span><br><span class="line">        tower.append(one + <span class="number">1</span>)</span><br><span class="line">    tower.reverse()</span><br><span class="line"></span><br><span class="line">    start_pole = Pole(<span class="string">'start'</span>, tower)</span><br><span class="line">    middle_pole = Pole(<span class="string">'middle'</span>, [])</span><br><span class="line">    end_pole = Pole(<span class="string">'end'</span>, [])</span><br><span class="line"></span><br><span class="line">    move(len(tower), start_pole, middle_pole, end_pole)</span><br><span class="line"><span class="comment"># start: [3, 2] middle: [] end: [1]</span></span><br><span class="line"><span class="comment"># start: [3] middle: [2] end: [1]</span></span><br><span class="line"><span class="comment"># start: [3] middle: [2, 1] end: []</span></span><br><span class="line"><span class="comment"># start: [] middle: [2, 1] end: [3]</span></span><br><span class="line"><span class="comment"># start: [1] middle: [2] end: [3]</span></span><br><span class="line"><span class="comment"># start: [1] middle: [] end: [3, 2]</span></span><br><span class="line"><span class="comment"># start: [] middle: [] end: [3, 2, 1]</span></span><br></pre></td></tr></table></figure>
+<h3 id="螺线"><a href="#螺线" class="headerlink" title="螺线"></a>螺线</h3><p>可以使用递归画一些自相似的图形。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> turtle</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw_spiral</span><span class="params">(t, length)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> length &gt; <span class="number">0</span>:</span><br><span class="line">        t.forward(length)</span><br><span class="line">        t.right(<span class="number">90</span>)</span><br><span class="line">        draw_spiral(t, length - <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    t = turtle.Turtle()</span><br><span class="line">    draw_spiral(t, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    turtle.done()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/img00015.png" alt=""></p>
+<h3 id="找零"><a href="#找零" class="headerlink" title="找零"></a>找零</h3><p>零钱是货币体系中重要的一部分，这里我们以美分 ￠ 为例，硬币共有 1￠、5￠、10￠ 和 25￠。通常来说，如果要找一定价值的零钱，我们选择硬币数量最少进行找零，如找零 6￠，因该是 1 个 1￠ 和 1 个 5￠，而不是 6 个 1￠。</p>
+<p>我们在这里使用贪心算法解决找零问题，需要说的是，贪心算法不一定能找到最优解，但是对于正常的货币体系来说，是没有问题的。我们这里默认每次找零，先按最大面值的找，逐步减小面值。</p>
+<blockquote>
+<p>找零</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(kinds: list, value: int)</span>:</span></span><br><span class="line">    min_num = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> value <span class="keyword">in</span> kinds:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> one <span class="keyword">in</span> [coin <span class="keyword">for</span> coin <span class="keyword">in</span> kinds <span class="keyword">if</span> coin &lt; value]:</span><br><span class="line">            num = <span class="number">1</span> + change(kinds, value - one)</span><br><span class="line">            <span class="keyword">if</span> num &lt; min_num:</span><br><span class="line">                min_num = num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> min_num</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    print(change([<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">25</span>], <span class="number">63</span>))</span><br><span class="line">    print(<span class="string">'used: %3.2fs'</span> % (time.time() - start))</span><br><span class="line"><span class="comment"># 6</span></span><br><span class="line"><span class="comment"># used: 25.50s</span></span><br></pre></td></tr></table></figure>
+<p>在这里为什么需要那么多的时间，是因为一个面值的找零重复进行了许多次的计算，造成了不必要的浪费，我们现在改进一下。只需要记录一下已找到某个面值的最优解即可。</p>
+<blockquote>
+<p>改进找零</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(kinds: list, value: int, known: dict)</span>:</span></span><br><span class="line">    min_num = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> value <span class="keyword">in</span> kinds:</span><br><span class="line">        known[value] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> value <span class="keyword">in</span> known:</span><br><span class="line">        <span class="keyword">return</span> known[value]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> one <span class="keyword">in</span> [coin <span class="keyword">for</span> coin <span class="keyword">in</span> kinds <span class="keyword">if</span> coin &lt; value]:</span><br><span class="line">            num = <span class="number">1</span> + change(kinds, value - one, known)</span><br><span class="line">            <span class="keyword">if</span> num &lt; min_num:</span><br><span class="line">                min_num = num</span><br><span class="line">                known[value] = min_num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> min_num</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    print(change([<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">25</span>], <span class="number">63</span>, &#123;&#125;))</span><br><span class="line">    print(<span class="string">'used: %3.2fs'</span> % (time.time() - start))</span><br><span class="line"><span class="comment"># 6</span></span><br><span class="line"><span class="comment"># used: 0.00s</span></span><br></pre></td></tr></table></figure>
+<p>而记录是哪些面值的硬币就比较简单了，这里就不进行添加了。</p>
+<p>解决找零问题可以使用动态规划，这样能适应各种各样的货币，而贪心算法是有缺陷的，如货币种类有 1￠、5￠、10￠  25￠ 和 21￠，找零 63，按照上面的贪心算法，得数为 6 （2 个 25￠、1 个 10￠，3 个 1￠），真正的得数应是 3（3 个 21￠）。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Leo
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://249606097.github.io/2020/02/18/%E9%80%92%E5%BD%92-Recursion/" title="递归 Recursion">https://249606097.github.io/2020/02/18/递归-Recursion/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
+    
+</div>
+        
+      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/recursion/" rel="tag"># recursion</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/15/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84-Linear-Structure/" rel="prev" title="线性结构 Linear Structure">
+      <i class="fa fa-chevron-left"></i> 线性结构 Linear Structure
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/21/%E6%9F%A5%E6%89%BE-Search/" rel="next" title="查找 Search">
+      查找 Search <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程"><span class="nav-text">流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#十进制转化任意进制"><span class="nav-text">十进制转化任意进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#汉诺塔"><span class="nav-text">汉诺塔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#螺线"><span class="nav-text">螺线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找零"><span class="nav-text">找零</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description">I just want to do what I want.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/249606097" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;249606097" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Leo69041494" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Leo69041494" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.1
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共13.5k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

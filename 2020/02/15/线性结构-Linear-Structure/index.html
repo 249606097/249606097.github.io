@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/L-128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/L-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/L-16x16.png">
+  <link rel="mask-icon" href="/images/L-128x128.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://249606097.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="线性结构是一种有序的数据项的集合，其中每个数据项都有唯一的前驱和后继，除第一项个没有前驱，最后一项没有后继，并且新的数据项添加到数据集中，只会添加到原有某个数据项之前或之后。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性结构 Linear Structure">
+<meta property="og:url" content="https://249606097.github.io/2020/02/15/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84-Linear-Structure/index.html">
+<meta property="og:site_name" content="Leo Blog">
+<meta property="og:description" content="线性结构是一种有序的数据项的集合，其中每个数据项都有唯一的前驱和后继，除第一项个没有前驱，最后一项没有后继，并且新的数据项添加到数据集中，只会添加到原有某个数据项之前或之后。">
+<meta property="og:image" content="https://249606097.github.io/images/img00001.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00002.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00003.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00004.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00005.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00006.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00007.png">
+<meta property="og:image" content="https://249606097.github.io/images/img00008.png">
+<meta property="article:published_time" content="2020-02-15T09:09:29.000Z">
+<meta property="article:modified_time" content="2020-02-18T14:30:44.366Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="structure">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://249606097.github.io/images/img00001.png">
+
+<link rel="canonical" href="https://249606097.github.io/2020/02/15/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84-Linear-Structure/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>线性结构 Linear Structure | Leo Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Leo Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Leo Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Awesome!</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://249606097.github.io/2020/02/15/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84-Linear-Structure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Leo">
+      <meta itemprop="description" content="I just want to do what I want.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leo Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线性结构 Linear Structure
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-15 17:09:29" itemprop="dateCreated datePublished" datetime="2020-02-15T17:09:29+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-18 22:30:44" itemprop="dateModified" datetime="2020-02-18T22:30:44+08:00">2020-02-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>线性结构是一种有序的数据项的集合，其中每个数据项都有唯一的前驱和后继，除第一项个没有前驱，最后一项没有后继，并且新的数据项添加到数据集中，只会添加到原有某个数据项之前或之后。</p>
+<a id="more"></a>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>线性结构（Linear Structure）是一种有序的数据项的集合，其中每个数据项都有唯一的前驱和后继，除第一项个没有前驱，最后一项没有后继，并且新的数据项添加到数据集中，只会添加到原有某个数据项之前或之后。</p>
+<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
+<li>集合中必存在唯一的一个第一项</li>
+<li>集合中必存在唯一的一个最后一项</li>
+<li>除第一项之外，其他项均有唯一的前驱</li>
+<li>除最后一项之外，其他项均有唯一的后继</li>
+</ul>
+<p>线性结构总有两端，前端 — 后端、左端 — 右端、顶端 — 底端。</p>
+<p><img src="/images/img00001.png" alt=""></p>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>根据数据项的添加和移除的方式，即从前端添加和移除、从中间添加和移除、从后端添加和移除，可以分为</p>
+<ul>
+<li>栈 Stack</li>
+<li>队列 Queue</li>
+<li>双端队列 Deque</li>
+<li>列表 List</li>
+<li>串 String</li>
+</ul>
+<h2 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 Stack"></a>栈 Stack</h2><p>栈是一种有次序的数据项集合，在栈中，数据项的添加和移除仅发生在同一端，即栈顶，另一端固定不动，即栈底。</p>
+<ul>
+<li>栈顶 top: 数据项添加和移除的一端</li>
+<li>栈底 bottom: 固定不动的一端</li>
+</ul>
+<p>在栈中，数据项的添加称为入栈，数据项的移除称为出栈。</p>
+<ul>
+<li>入栈 push: 又称为压栈，即添加数据项</li>
+<li>出栈 pop: 又称为弹出，即移除数据项</li>
+<li>查看 peek: 查看栈顶数据项，数据项不出栈</li>
+</ul>
+<p><img src="/images/img00002.png" alt=""></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><blockquote>
+<p>First In Last Out.</p>
+</blockquote>
+<p>在栈中，第一个入栈的数据项总是最后一个出栈，并且一个数据项只有在其顶部数据项均被移除的情况下才能被移除，这种特性称为“先进后出”。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>Python 实现简单的栈</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.items = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span> -&gt; bool:</span></span><br><span class="line">        <span class="keyword">return</span> self.items == []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, item)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.items.append(item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span> -&gt; object:</span></span><br><span class="line">        <span class="keyword">return</span> self.items.pop()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span> -&gt; object:</span></span><br><span class="line">        <span class="keyword">return</span> self.items[<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.items)</span><br></pre></td></tr></table></figure>
+<p>栈最基本的功能就是入栈 push 和出栈 pop。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>栈是具有顺序的数据结构，在许多方面都有应用，例如我们常常提到的栈溢出，它本质上就是一个栈，而栈并不是无限大从而有可能发生溢出。</p>
+<h4 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h4><p>不管是在书写的文章中，还是代码中，都或多或少得存在一种成对的符号——括号（圆括号、方括号、花括号），括号总是成对出现，即有左括号，那么必须有右括号，否则就是不匹配，可能会造成语义上的混乱，例如初学 C 语言时，少写 <code>{</code> 或 <code>}</code> 造成编译错误。</p>
+<p>括号具有顺序，并且可以嵌套，所以仅仅统计左括号和右括号的数量显然不正确，如 <code>)()()(</code>，这时候就可以使用栈进行匹配。</p>
+<blockquote>
+<p>圆括号匹配</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> linear_structure.basic_stack <span class="keyword">import</span> Stack</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parentheses_checker</span><span class="params">(string)</span> -&gt; bool:</span></span><br><span class="line">    s = Stack()</span><br><span class="line">    <span class="keyword">for</span> symbol <span class="keyword">in</span> string:</span><br><span class="line">        <span class="keyword">if</span> symbol == <span class="string">'('</span>:</span><br><span class="line">            s.push(symbol)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> symbol == <span class="string">')'</span>:</span><br><span class="line">            <span class="keyword">if</span> s.is_empty():</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                s.pop()</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> s.is_empty():</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(parentheses_checker(<span class="string">'())'</span>))  <span class="comment"># False</span></span><br><span class="line">    print(parentheses_checker(<span class="string">'(123(abc)d)(ll)(1)'</span>))  <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>括号匹配</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> linear_structure.basic_stack <span class="keyword">import</span> Stack</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">brackets_checker</span><span class="params">(string)</span>:</span></span><br><span class="line">    start_symbols = <span class="string">'([&#123;'</span></span><br><span class="line">    end_symbols = <span class="string">')]&#125;'</span></span><br><span class="line"></span><br><span class="line">    s = Stack()</span><br><span class="line">    <span class="keyword">for</span> symbol <span class="keyword">in</span> string:</span><br><span class="line">        <span class="keyword">if</span> symbol <span class="keyword">in</span> start_symbols:</span><br><span class="line">            s.push(symbol)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> symbol <span class="keyword">in</span> end_symbols:</span><br><span class="line">            <span class="keyword">if</span> s.is_empty():</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> match(s.pop(), symbol):</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> s.is_empty():</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">match</span><span class="params">(start, end)</span>:</span></span><br><span class="line">    start_symbols = <span class="string">'([&#123;'</span></span><br><span class="line">    end_symbols = <span class="string">')]&#125;'</span></span><br><span class="line">    <span class="keyword">return</span> start_symbols.index(start) == end_symbols.index(end)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(brackets_checker(<span class="string">'[&#123;[]&#125;][([])]'</span>))  <span class="comment"># True</span></span><br><span class="line">    print(brackets_checker(<span class="string">'&#123;[[]][([])]'</span>))  <span class="comment"># False</span></span><br></pre></td></tr></table></figure>
+<p>HTML、XML等结构化的文档也可以使用栈进行校验，在对成对出现的元素进行匹配时，栈是一个很好的工具。</p>
+<h4 id="反转"><a href="#反转" class="headerlink" title="反转"></a>反转</h4><p>栈的特点是“先进后出”，这正好符合反序的思想，可以使用栈来反转数据。</p>
+<blockquote>
+<p>反转函数</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> linear_structure.basic_stack <span class="keyword">import</span> Stack</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(string)</span> -&gt; str:</span></span><br><span class="line">    result = <span class="string">''</span></span><br><span class="line"></span><br><span class="line">    s = Stack()</span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> string:</span><br><span class="line">        s.push(one)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> s.is_empty():</span><br><span class="line">        result += s.pop()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(reverse(<span class="string">'12wqr3'</span>))  <span class="comment"># 3rqw21</span></span><br></pre></td></tr></table></figure>
+<h4 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h4><p>一个很常见的编程问题就是求一段数学表达式的值，通常数学表达式是一个字符串，在这里我们保证字符串数学表达式的正确性，并且只讨论非负整数和小数的加 +、减 -、乘 *、除 /。</p>
+<p>对于一个数学表达式，如 10 + 3.14 * 2，一个字符串我们是无法直接进行处理的，首先要将字符串切片成一个个最小单位的元素，如 <code>10</code>、<code>+</code>、<code>3.14</code>、<code>+</code>、<code>2</code>，如果输入的时候每个元素之间存在空格，那么直接按空格切片处理，但通常不会有空格，所以我们先编写一个切片函数。</p>
+<blockquote>
+<p>切片函数</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">split</span><span class="params">(expression: str)</span> -&gt; list:</span></span><br><span class="line">    result = []</span><br><span class="line"></span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> index &lt; len(expression):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> expression[index].isdigit():</span><br><span class="line">            result.append(expression[index])</span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            p = index + <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> p &lt; len(expression) <span class="keyword">and</span> \</span><br><span class="line">                    (expression[p].isdigit() <span class="keyword">or</span> expression[p] == <span class="string">'.'</span>):</span><br><span class="line">                p += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            result.append(expression[index: p])</span><br><span class="line">            index = p</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>虽然字符串经过切片，但直接处理非常复杂，不仅需要考虑运算符的优先级，还要考虑括号的影响。其实这是表达式本身缺陷导致的，我们通常使用的表达式，如 10 + 3.14 * 2，它是一个中缀表达式，即运算符在操作数中间，这易于人类读写，但对计算机极不友好，当然存在表达式的其他表示形式 —— 前缀表达式和后缀表达式。</p>
+<p>表达式分为</p>
+<ul>
+<li><p>中缀表达式 infix expression</p>
+<p>中缀表达式是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于操作数的中间，如 1 + 2，中缀表达式是人们常用的算术表示方法，并且相较于其他两种表示方法，在中缀表达式中括号是必须的，如 1 - (2 + 3)。</p>
+</li>
+<li><p>前缀表达式 prefix expression</p>
+<p>前缀表达式又称“波兰式” Polish notation，由波兰数学家 Jan Lukasiewicz 发明，它是一种没有括号的算术表达式，与中缀表达式不同的是，它将运算符写在前面，操作数写在后面，如，- 1 + 2 3，等价于 1 - (2 + 3)。</p>
+</li>
+<li><p>后缀表达式 postfix expression</p>
+<p>后缀表达式又称“逆波兰式” Reverse Polish notation，它将操作数写在前面，运算符写在后面，如 1 2 3 + -，等价于 1 - (2 + 3)。</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>中缀表达式</th>
+<th>前缀表达式</th>
+<th>后缀表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 - (2 + 3)</td>
+<td>- 1 + 2 3</td>
+<td>1 2 3 + -</td>
+</tr>
+<tr>
+<td>A / (B + C) * D</td>
+<td>* / A +  B C D</td>
+<td>A B C + / D *</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>通常，我们将中缀表达式转换为逆波兰式，也就是后缀表达式进行计算，转换的一般算法是</p>
+<p>准备一个空栈 operators_stack 和一个存放结果的列表 result，且中缀表达式已处理为每个元素都是一个最小单位。</p>
+<ol>
+<li>取元素</li>
+<li>判断<ul>
+<li>若元素是操作数，则直接将操作数放入列表 result 中</li>
+<li>若元素是 ( ，则直接将 ( 压入栈 operators_stack 中</li>
+<li>若元素是 ) ，则将距离栈顶 operators_stack top 最近的 ( 之间的运算符依次出栈放入列表 result 中，舍弃 (</li>
+<li>若元素是操作符，则依次出栈所有优先级不低于当前运算符（栈顶运算符优先级高于或等于当前运算符的优先级）的运算符放入列表 result 中，特别的，遇到 ( 停止</li>
+</ul>
+</li>
+<li>重复 1. 和 2. 直至处理完所有的元素</li>
+<li>列表 result 为转化完的后缀表达式</li>
+</ol>
+<blockquote>
+<p>转换为后缀表达式</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> linear_structure.basic_stack <span class="keyword">import</span> Stack</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transform_into_postfix_expression</span><span class="params">(split_expression: list)</span> -&gt; list:</span></span><br><span class="line">    result = []</span><br><span class="line">    operators_stack = Stack()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> split_expression:</span><br><span class="line">        <span class="keyword">if</span> is_number(one):</span><br><span class="line">            result.append(one)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> one == <span class="string">'('</span>:</span><br><span class="line">            operators_stack.push(one)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> one == <span class="string">')'</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> operators_stack.is_empty():</span><br><span class="line">                operator = operators_stack.pop()</span><br><span class="line">                <span class="keyword">if</span> operator == <span class="string">'('</span>:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    result.append(operator)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> operators_stack.is_empty() <span class="keyword">and</span> \</span><br><span class="line">                    operators_stack.peek() != <span class="string">'('</span> <span class="keyword">and</span> \</span><br><span class="line">                    <span class="keyword">not</span> is_higher(one, operators_stack.peek()):</span><br><span class="line">                result.append(operators_stack.pop())</span><br><span class="line">            operators_stack.push(one)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_number</span><span class="params">(string: str)</span> -&gt; bool:</span></span><br><span class="line">    pattern = re.compile(<span class="string">r'^[-+]?[-0-9]\d*\.\d*|[-+]?\.?[0-9]\d*$'</span>)</span><br><span class="line">    result = pattern.match(string)</span><br><span class="line">    <span class="keyword">if</span> result:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_higher</span><span class="params">(op1: str, op2: str)</span> -&gt; bool:</span></span><br><span class="line">    operators = &#123;</span><br><span class="line">        <span class="string">'+'</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">'-'</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">'*'</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">'/'</span>: <span class="number">2</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> operators[op1] &gt; operators[op2]</span><br></pre></td></tr></table></figure>
+<p>转换为后缀表达式，我们就要开始计算了，后缀表达式的计算依然需要使用栈，计算方式为</p>
+<ol>
+<li>取元素</li>
+<li>判断<ul>
+<li>若元素是操作数，则直接将操作数压入栈中</li>
+<li>若元素是运算符，则弹出栈中的两个操作数，根据运算符进行运算，得数压入栈中</li>
+</ul>
+</li>
+<li>重复 1. 和 2. 直至处理完所有的元素</li>
+<li>栈顶元素也是唯一元素即为结果</li>
+</ol>
+<blockquote>
+<p>计算</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate</span><span class="params">(expression: str)</span>:</span></span><br><span class="line">    split_expression = split(expression)</span><br><span class="line">    postfix_expression = transform_into_postfix_expression(split_expression)</span><br><span class="line"></span><br><span class="line">    numbers_stack = Stack()</span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> postfix_expression:</span><br><span class="line">        <span class="keyword">if</span> is_number(one):</span><br><span class="line">            numbers_stack.push(float(one))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            numbers_stack.push(</span><br><span class="line">              do_math(one, numbers_stack.pop(), numbers_stack.pop())</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> numbers_stack.pop()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    exp = <span class="string">'1-((1*3.2+5)*4/6+2*43/(5-3+3*3)*534/534)'</span></span><br><span class="line">    </span><br><span class="line">    print(calculate(exp))  <span class="comment"># -12.284848484848485</span></span><br><span class="line">    print(eval(exp))  <span class="comment"># -12.284848484848485</span></span><br></pre></td></tr></table></figure>
+<h2 id="队列-Queue"><a href="#队列-Queue" class="headerlink" title="队列 Queue"></a>队列 Queue</h2><p>队列是一种有次序的数据集合，在队列中，数据项的添加总是发生在一段，即尾端，数据项的移除总是发生在另一端，即首端。</p>
+<ul>
+<li>尾端 rear: 数据项添加的一端</li>
+<li>首端 front: 数据项移除的一端</li>
+</ul>
+<p>在队列中，数据项的添加称为入队，数据项的移除称为出队。</p>
+<ul>
+<li>入队 enqueue: 数据项的添加</li>
+<li>出队 dequeue: 数据项的移除</li>
+</ul>
+<p><img src="/images/img00003.png" alt=""></p>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><blockquote>
+<p>First In First Out.</p>
+<p>First Come First Served.</p>
+</blockquote>
+<p>在队列中，第一个进入队的数据项总是第一个出队，并且一个数据项只有在其前部数据项均出队的情况下才能出队，这种特性称为“先进先出”或“先到先服务”。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>Python 实现简单的队列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.items = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span> -&gt; bool:</span></span><br><span class="line">        <span class="keyword">return</span> self.items == []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span><span class="params">(self, item: object)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.items.insert(<span class="number">0</span>, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span><span class="params">(self)</span> -&gt; object:</span></span><br><span class="line">        <span class="keyword">return</span> self.items.pop()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.items)</span><br></pre></td></tr></table></figure>
+<p>队列最基本的功能就是入队 enqueue 和出队 dequeue。</p>
+<h3 id="应用-1"><a href="#应用-1" class="headerlink" title="应用"></a>应用</h3><p>队列在日常生活中随处可见，如在餐馆排队等。</p>
+<h4 id="模拟排队"><a href="#模拟排队" class="headerlink" title="模拟排队"></a>模拟排队</h4><p>计算机模拟是计算机应用一个重要的方面，毕竟有些情况在显示生活中不便于模拟，如花费较大的或者危险的等，使用计算机进行模拟就可以在一定程度上反应显示的相关情况。</p>
+<p>首先我们先定义一个任务类，这个任务就像去冰激淋商店的一个顾客，显然他有到达商店的时间（用于统计等待时间）和购买冰激淋的数量，并且顾客到商店是一个随机事件。</p>
+<blockquote>
+<p>任务类</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, created_time: int, num: int)</span>:</span></span><br><span class="line">        self.created_time = created_time</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_created_time</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> self.created_time</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_num</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> self.num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_wait_time</span><span class="params">(self, current_time)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> current_time - self.created_time</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_task</span><span class="params">(current_time: int)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> random.randint(<span class="number">1</span>, <span class="number">50</span>) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> Task(current_time, random.randint(<span class="number">1</span>, <span class="number">5</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>其次需要处理顾客订单的商店类</p>
+<blockquote>
+<p>商店类</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shop</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, needed_seconds)</span>:</span></span><br><span class="line">        self.needed_seconds = needed_seconds</span><br><span class="line">        self.current_task = <span class="literal">None</span></span><br><span class="line">        self.remaining_time = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tick</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.current_task <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self.remaining_time -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> self.remaining_time == <span class="number">0</span>:</span><br><span class="line">                self.current_task = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_busy</span><span class="params">(self)</span> -&gt; bool:</span></span><br><span class="line">        <span class="keyword">return</span> self.current_task <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self, task: Task)</span>:</span></span><br><span class="line">        self.current_task = task</span><br><span class="line">        self.remaining_time = task.get_num() * self.needed_seconds</span><br></pre></td></tr></table></figure>
+<p>现在我们就可以进行模拟了。</p>
+<blockquote>
+<p>模拟函数</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simulate_queue</span><span class="params">(total_seconds: int, needed_seconds: int)</span>:</span></span><br><span class="line">    s = Shop(needed_seconds)</span><br><span class="line">    q = Queue()</span><br><span class="line">    wait_time = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> current <span class="keyword">in</span> range(total_seconds):</span><br><span class="line">        task = Task.get_task(current)</span><br><span class="line">        <span class="keyword">if</span> task <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            q.enqueue(task)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> s.is_busy() <span class="keyword">and</span> <span class="keyword">not</span> q.is_empty():</span><br><span class="line">            next_task = q.dequeue()</span><br><span class="line">            wait_time.append(next_task.get_wait_time(current))</span><br><span class="line">            s.next(next_task)</span><br><span class="line"></span><br><span class="line">        s.tick()</span><br><span class="line"></span><br><span class="line">    average_wait_time = sum(wait_time) / len(wait_time)</span><br><span class="line">    print(<span class="string">'average wait time: %5.2f seconds, %2d tasks remaining.'</span></span><br><span class="line">          % (average_wait_time, q.size()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        simulate_queue(<span class="number">3600</span>, <span class="number">10</span>)</span><br><span class="line"><span class="comment"># average wait time: 27.15 seconds,  0 tasks remaining</span></span><br><span class="line"><span class="comment"># average wait time: 11.72 seconds,  0 tasks remaining</span></span><br><span class="line"><span class="comment"># average wait time: 14.14 seconds,  3 tasks remaining</span></span><br><span class="line"><span class="comment"># average wait time: 22.26 seconds,  1 tasks remaining</span></span><br><span class="line"><span class="comment"># average wait time: 45.51 seconds,  1 tasks remaining</span></span><br></pre></td></tr></table></figure>
+<h4 id="约瑟夫圈"><a href="#约瑟夫圈" class="headerlink" title="约瑟夫圈"></a>约瑟夫圈</h4><p>约瑟夫圈也称为约瑟夫问题 Josephus problem，它的基本表述是有一定数量的人围成一个圆圈并轮流报数，当报到某个数字的人就出圈，报数重新开始，直到只剩下一个人。</p>
+<blockquote>
+<p>解决约瑟夫问题</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> linear_structure.basic_queue <span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve_josephus_problem</span><span class="params">(total: int, num: int)</span> -&gt; int:</span></span><br><span class="line">    q = Queue()</span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> range(<span class="number">1</span>, total + <span class="number">1</span>):</span><br><span class="line">        q.enqueue(one)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> q.size() &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">for</span> one <span class="keyword">in</span> range(num - <span class="number">1</span>):</span><br><span class="line">            q.enqueue(q.dequeue())</span><br><span class="line"></span><br><span class="line">        q.dequeue()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> q.dequeue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(solve_josephus_problem(<span class="number">10</span>, <span class="number">3</span>))  <span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
+<h2 id="双端队列-Deque"><a href="#双端队列-Deque" class="headerlink" title="双端队列 Deque"></a>双端队列 Deque</h2><p>双端队列是一种有次序的数据项集合，在双端队列中，数据项的添加和移除发生在两端，和队列一样，我们将两端分为首端和尾端。</p>
+<ul>
+<li>尾端 rear: 数据项添加和移除的一端</li>
+<li>首端 front: 数据项添加和移除的一端</li>
+</ul>
+<p>和队列一样，在双端队列中，数据项的添加称为入队，数据项的移除称为出队，只不过数据项的添加和移除区分从首端和从尾端。</p>
+<ul>
+<li>尾端入队 add rear: 向尾端添加数据项</li>
+<li>尾端出队 remove rear: 从尾端移除数据项</li>
+<li>首端入队 add front: 向首端添加数据项</li>
+<li>首端出队 remove front: 从首端移除数据项</li>
+</ul>
+<p><img src="/images/img00004.png" alt=""></p>
+<h3 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h3><blockquote>
+<p>It’s Up To You.</p>
+</blockquote>
+<p>双端队列既有队列的特性，也有栈的特性，使用者可以保持操作的一致性，使得双端队列表现成为队列或者栈。</p>
+<h3 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h3><p>Python 实现简单的双端队列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Deque</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.items = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_rear</span><span class="params">(self, item: object)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.items.insert(<span class="number">0</span>, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove_rear</span><span class="params">(self)</span> -&gt; object:</span></span><br><span class="line">        <span class="keyword">return</span> self.items.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_front</span><span class="params">(self, item: object)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.items.append(item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove_front</span><span class="params">(self)</span> -&gt; object:</span></span><br><span class="line">        <span class="keyword">return</span> self.items.pop()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.items)</span><br></pre></td></tr></table></figure>
+<h3 id="应用-2"><a href="#应用-2" class="headerlink" title="应用"></a>应用</h3><p>双端队列可以当作队列或者栈使用，所以使用队列或栈的方法，双端队列能够完成，这里介绍双端队列的特别应用。</p>
+<h4 id="回文判定"><a href="#回文判定" class="headerlink" title="回文判定"></a>回文判定</h4><p>回文 Palindrome 是一种正序和倒序相同的一端文字，如 12321、321123。</p>
+<blockquote>
+<p>判断回文</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> linear_structure.basic_deque <span class="keyword">import</span> Deque</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">palindrome_check</span><span class="params">(string: str)</span> -&gt; bool:</span></span><br><span class="line">    d = Deque()</span><br><span class="line">    <span class="keyword">for</span> one <span class="keyword">in</span> list(string):</span><br><span class="line">        d.add_rear(one)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> d.size() &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">if</span> d.remove_rear() != d.remove_front():</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(palindrome_check(<span class="string">'1212'</span>))  <span class="comment"># False</span></span><br><span class="line">    print(palindrome_check(<span class="string">'121'</span>))  <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+<h2 id="列表-List"><a href="#列表-List" class="headerlink" title="列表 List"></a>列表 List</h2><p>列表是一种有次序的数据项集合，根据数据项是否有序，列表分为</p>
+<ul>
+<li><p>无序表 Unordered List</p>
+<p>在无序表中，数据项的添加和移除可以发生在任意位置</p>
+</li>
+<li><p>有序表 Ordered List</p>
+<p>在有序表中，数据项的添加和移除发生在某一固定位置</p>
+</li>
+</ul>
+<p>根据数据项的存储形式，列表</p>
+<ul>
+<li><p>顺序表 Contiguous List</p>
+<p>在顺序表中，数据项在内存空间是顺序存储的</p>
+</li>
+<li><p>链表 Linked List</p>
+<p>在链表中，数据项在内存空间中是链式存储的，是没有规律的，一个数据项内存储着下一个数据项的内存地址</p>
+</li>
+</ul>
+<h3 id="无序表-Unordered-List"><a href="#无序表-Unordered-List" class="headerlink" title="无序表 Unordered List"></a>无序表 Unordered List</h3><p>无序表与有序表是相对的，无序表是数据项的排列不具有顺序性。并且无序表是可以经过排序变为有序表，常用的排序算法有: 冒泡排序、插入排序、桶排序、计数排序、合并排序、选择排序、快速排序、堆排序等。</p>
+<p>在无序表中，数据项的添加和移除可以发生在任意位置。</p>
+<ul>
+<li>添加到表末尾 append: 添加数据项到表末尾</li>
+<li>添加到指定位置 insert: 添加数据项到指定位置</li>
+<li>移除 pop: 移除指定位置的数据项</li>
+<li>查找 search: 查找数据项在有序表中是否存在，必须遍历整个表</li>
+</ul>
+<p><img src="/images/img00005.png" alt=""></p>
+<h4 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h4><p>Python 实现简单的无序表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnorderedList</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.items = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        self.items.append(item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(self, index, item)</span>:</span></span><br><span class="line">        self.items.insert(index, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self, *args)</span>:</span></span><br><span class="line">        self.items.pop(*args)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> one <span class="keyword">in</span> self.items:</span><br><span class="line">            <span class="keyword">if</span> one == item:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="有序表-Ordered-List"><a href="#有序表-Ordered-List" class="headerlink" title="有序表 Ordered List"></a>有序表 Ordered List</h3><p>有序表中所有数据项以递增或递减方式排列，并规定有序表中可存在元素值相同的元素。</p>
+<p>在有序表中，数据项的添加和移除发生在某一固定位置。</p>
+<ul>
+<li>添加 add: 添加数据项，数据项会根据顺序性添加到某一特定位置</li>
+<li>移除 remove: 移除数据项，数据项会被移除，但并不会破坏移除后数据项的有序性</li>
+<li>查找 search: 查找数据项在有序表中是否存在，按照顺序查找，可以使用二分法</li>
+</ul>
+<p><img src="/images/img00006.png" alt=""></p>
+<h4 id="实现-4"><a href="#实现-4" class="headerlink" title="实现"></a>实现</h4><p>首先要放入有序表的数据项必须是可比的，否则无意义，在这里我们只需要保证数据项可以使用 <code>&gt;</code> 进行比较，在 Python 中，只需要重载 <code>__gt__()</code> 即可。</p>
+<p>Python 实现简单的有序表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderedList</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.items = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        index = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> index &lt; len(self.items):</span><br><span class="line">            <span class="keyword">if</span> self.items[index] &gt; item:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">        self.items.insert(index, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        index = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> index &lt; len(self.items) <span class="keyword">and</span> <span class="keyword">not</span> self.items[index] &gt; item:</span><br><span class="line">            <span class="keyword">if</span> self.items[index] == item:</span><br><span class="line">                self.items.pop(index)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        index = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> index &lt; len(self.items) <span class="keyword">and</span> <span class="keyword">not</span> self.items[index] &gt; item:</span><br><span class="line">            <span class="keyword">if</span> self.items[index] == item:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="顺序表-Contiguous-List"><a href="#顺序表-Contiguous-List" class="headerlink" title="顺序表 Contiguous List"></a>顺序表 Contiguous List</h3><p>顺序表是将表中的结点依次存放在计算机内存中一组地址连续的存储单元中。</p>
+<p><img src="/images/img00007.png" alt=""></p>
+<h4 id="实现-5"><a href="#实现-5" class="headerlink" title="实现"></a>实现</h4><p>顺序表和 Python 中的列表 List 一致并且和其他编程语言的数组本质相同，在这里就不重复实现了。</p>
+<h3 id="链表-Linked-List"><a href="#链表-Linked-List" class="headerlink" title="链表 Linked List"></a>链表 Linked List</h3><p>链表实际上是线性表的链式存储结构，与顺序表不同的是，它是用一组任意的内存地址来存储线性表中的数据，存储地址不一定是连续的。链表的每个元素称为一个节点，每个节点都可以存储在内存中的不同的位置，并且每个节点中存储着数据项本身和一个指向下一个节点的指针（或者节点的引用）。</p>
+<p><img src="/images/img00008.png" alt=""></p>
+<h4 id="实现-6"><a href="#实现-6" class="headerlink" title="实现"></a>实现</h4><p>我们在这里讨论的链表一般指单向链表。节点是链表的核心，它存储着数据项本身和下一个节点，所以我们首先实现节点类。</p>
+<p>节点类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line">        self.next = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_data</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.data</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_next</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.next</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_data</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_next</span><span class="params">(self, next)</span>:</span></span><br><span class="line">        self.next = next</span><br></pre></td></tr></table></figure>
+<p>链表类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.head = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.head <span class="keyword">is</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        n = Node(data)</span><br><span class="line">        n.set_next(self.head)</span><br><span class="line">        self.head = n</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        n = self.head</span><br><span class="line">        <span class="keyword">while</span> n <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            n = n.get_next()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        n = self.head</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> n <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">if</span> n.get_data() == data:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">            n = n.get_next()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.head <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">if</span> self.head.get_data() == data:</span><br><span class="line">                self.head = self.head.get_next()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                previous = self.head</span><br><span class="line">                n = previous.get_next()</span><br><span class="line">                <span class="keyword">while</span> n <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    <span class="keyword">if</span> n.get_data() == data:</span><br><span class="line">                        previous.set_next(n.get_next())</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line">                    previous = n</span><br><span class="line">                    n = previous.get_next()</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Leo
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://249606097.github.io/2020/02/15/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84-Linear-Structure/" title="线性结构 Linear Structure">https://249606097.github.io/2020/02/15/线性结构-Linear-Structure/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
+    
+</div>
+        
+      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/structure/" rel="tag"># structure</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/04/ASCII-%E7%A0%81/" rel="prev" title="ASCII 码">
+      <i class="fa fa-chevron-left"></i> ASCII 码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/18/%E9%80%92%E5%BD%92-Recursion/" rel="next" title="递归 Recursion">
+      递归 Recursion <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征"><span class="nav-text">特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈-Stack"><span class="nav-text">栈 Stack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特点"><span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#匹配"><span class="nav-text">匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反转"><span class="nav-text">反转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表达式"><span class="nav-text">表达式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#队列-Queue"><span class="nav-text">队列 Queue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特点-1"><span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现-1"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-1"><span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模拟排队"><span class="nav-text">模拟排队</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#约瑟夫圈"><span class="nav-text">约瑟夫圈</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双端队列-Deque"><span class="nav-text">双端队列 Deque</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特点-2"><span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现-2"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-2"><span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#回文判定"><span class="nav-text">回文判定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表-List"><span class="nav-text">列表 List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无序表-Unordered-List"><span class="nav-text">无序表 Unordered List</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-3"><span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序表-Ordered-List"><span class="nav-text">有序表 Ordered List</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-4"><span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺序表-Contiguous-List"><span class="nav-text">顺序表 Contiguous List</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-5"><span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表-Linked-List"><span class="nav-text">链表 Linked List</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-6"><span class="nav-text">实现</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description">I just want to do what I want.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/249606097" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;249606097" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Leo69041494" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Leo69041494" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.1
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共13.5k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
